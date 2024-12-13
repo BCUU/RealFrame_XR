@@ -3,31 +3,46 @@ using DG.Tweening;
 
 public class ReplaceMaterials : MonoBehaviour
 {
-    // Fade süresi için hýz parametresi
     public float fadeDuration = 1f;
-    // Fade out uygulanacak materyal
     public Material targetMaterial;
+    public float semiTransparentAlpha = 0.5f;
 
     void Start()
     {
         if (targetMaterial == null)
         {
-            Debug.LogError("Hedef materyal atanmadý. Lütfen bir materyal atayýn.");
+            Debug.LogError("no material.");
             return;
         }
 
-        // Eðer materyal bir shader'da "_Color" özelliðine sahipse, fade out uygula
         if (targetMaterial.HasProperty("_Color"))
         {
             Color initialColor = targetMaterial.color;
             targetMaterial.DOColor(new Color(initialColor.r, initialColor.g, initialColor.b, 0), fadeDuration).OnComplete(() =>
             {
-                Debug.Log("Materyal fade out tamamlandý.");
+                Debug.Log("Materyal fade out .");
+
+                //Invoke("FadeToSemiTransparent", 22f);
             });
         }
         else
         {
-            Debug.LogError("Hedef materyal '_Color' özelliðine sahip deðil. Fade out uygulanamadý.");
+            Debug.LogError(" materyal '_Color' ");
+        }
+    }
+    public void FadeToSemiTransparent()
+    {
+        if (targetMaterial.HasProperty("_Color"))
+        {
+            Color initialColor = targetMaterial.color;
+            targetMaterial.DOColor(new Color(initialColor.r, initialColor.g, initialColor.b, semiTransparentAlpha), fadeDuration).OnComplete(() =>
+            {
+                Debug.Log("Materyal half transparant");
+            });
+        }
+        else
+        {
+            Debug.LogError(" materyal '_Color'");
         }
     }
 }
